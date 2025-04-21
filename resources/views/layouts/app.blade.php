@@ -98,6 +98,14 @@
                     confirmButtonText: "OK"
                 });
             </script>
+        @elseif(session()->has('success'))
+            <script>
+                Swal.fire({
+                    text: "{{ session('success') }}",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+            </script>
         @endif
 
         @if (session()->has('error'))

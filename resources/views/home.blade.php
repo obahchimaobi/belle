@@ -18,7 +18,7 @@
                                     <h2 class="h1 mega-title slideshow__title">Shop Our New Collection</h2>
                                     <span class="mega-subtitle slideshow__subtitle">From Hight to low, classic or
                                         modern. We have you covered</span>
-                                    <span class="btn">Shop now</span>
+                                    <a href="{{ route('shop') }}"><span class="btn">Shop now</span></a>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                                     <h2 class="h1 mega-title slideshow__title">Summer Bikini Collection</h2>
                                     <span class="mega-subtitle slideshow__subtitle">Save up to 50% off this weekend
                                         only</span>
-                                    <span class="btn">Shop now</span>
+                                    <a href="{{ route('shop') }}"><span class="btn">Shop now</span></a>
                                 </div>
                             </div>
                         </div>
