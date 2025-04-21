@@ -74,8 +74,6 @@ php artisan serve
 #### 🔐 User Login / Registration
 ![Authentication](/public/assets/images/authentication.png)
 
-> _Make sure you add your actual screenshots to the `/screenshots` folder in your repo._
-
 ---
 
 ## ✅ TODO (Planned Features)
@@ -105,10 +103,6 @@ This project is open-sourced under the [MIT License](LICENSE).
 
 For questions or support, feel free to reach out:
 
-- GitHub: [@your-username](https://github.com/your-username)
-- Email: yourname@example.com
+- GitHub: [obahchimaobi](https://github.com/obahchimaobi)
+- Email: anthonyobah37@gmail.com
 ```
-
----
-
-Let me know if you're using GitHub Pages for deployment or want to include badges like Laravel version, license, stars, etc. I can generate those for you too!
