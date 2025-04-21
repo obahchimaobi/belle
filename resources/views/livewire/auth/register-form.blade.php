@@ -49,9 +49,9 @@
             <div class="text-center col-12 col-sm-12 col-md-12 col-lg-12">
                 {{-- <input type="submit" class="btn mb-3" value="Create"> --}}
                 <button type="submit" class="btn">
-                    <span wire:loading.remove>Create</span>
+                    <span wire:loading.remove.delay>Create</span>
 
-                    <span wire:loading>Loading...</span>
+                    <span wire:loading.delay>Loading...</span>
                 </button>
             </div>
         </div>
