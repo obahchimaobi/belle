@@ -18,6 +18,9 @@
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/index.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
+
+    {{-- SWEETALERT CDN --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="template-index belle template-index-belle">
@@ -85,6 +88,18 @@
             });
         </script>
         <!--End For Newsletter Popup-->
+
+        @if (session()->has('success') && session()->has('message'))
+            <script>
+                Swal.fire({
+                    title: "{{ session('success') }}",
+                    text: "{{ session('message') }}",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+            </script>
+        @endif
+
     </div>
 </body>
 
