@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Auth;
 
-use App\Mail\RegisterMail;
+use URL;
 use App\Models\User;
 use Livewire\Component;
+use App\Mail\RegisterMail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use URL;
 
 class RegisterForm extends Component
 {
@@ -51,7 +52,9 @@ class RegisterForm extends Component
 
         Mail::to($email)->send(new RegisterMail($user, $token, $email, $verificationUrl));
 
-        return redirect()->route('login')->with(['success' => 'Registeration Successful', 'message' => 'We sent you a verification link to your email. Verify your email']);
+        Auth::login($user);
+
+        return redirect()->route('verify.form')->with(['success' => 'Registeration Successful', 'message' => 'We sent a code to your email. Use the code and verify your email.']);
     }
 
     public function render()

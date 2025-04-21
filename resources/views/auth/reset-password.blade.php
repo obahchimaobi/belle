@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Forgot Password
+    Reset Password
 @endsection
 
 @section('content')
@@ -11,7 +11,7 @@
         <div class="page section-header text-center">
             <div class="page-title">
                 <div class="wrapper">
-                    <h1 class="page-width">Forgot Password</h1>
+                    <h1 class="page-width">Reset Password</h1>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
                     <div class="mb-4">
-                        <livewire:auth.forgot-password-form />
+                        <livewire:auth.reset-password-form />
                     </div>
                 </div>
             </div>

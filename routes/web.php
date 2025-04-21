@@ -35,3 +35,7 @@ Route::get('/email/verify/{token}', function ($token) {
 
     return Redirect::route('login')->with('success', 'Your email has been successfully verified.');
 })->middleware('signed')->name('email.verify');
+
+Route::get('/verify', function () {
+    return view('auth.email.verify-template');
+})->name('verify.form');
