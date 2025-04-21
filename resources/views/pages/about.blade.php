@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    About Belle
+@endsection
+
 @section('content')
     <!--Body Content-->
     <div id="page-content">

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Shop
+@endsection
+
 @section('content')
     <!--Body Content-->
     <div id="page-content">
