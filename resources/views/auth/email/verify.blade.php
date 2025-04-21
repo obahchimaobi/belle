@@ -1,38 +1,40 @@
 @component('mail::message')
 
 @if(config('app.logo'))
-<img src="{{ asset(config('app.logo')) }}" alt="{{ config('app.name') }} Logo" style="max-width: 200px; margin: 0 auto; display: block; margin-bottom: 20px;">
+<img src="{{ asset(config('app.logo')) }}" alt="{{ config('app.name') }} Logo" style="max-width: 150px; margin: 0 auto 20px; display: block;">
 @endif
 
-# Hello {{ $user->name }},
+# 👋 Welcome, {{ $user->name }}!
 
-Thank you for signing up for {{ config('app.name') }}. We're thrilled to have you on board!
+Thanks for signing up for **{{ config('app.name') }}** — we’re excited to have you on board.
 
-To ensure the security of your account and enable full access to our platform, we need to verify your email address. Please click the verification link sent to your email. The link is valid for 10 minutes.
+To activate your account, please verify your email address by entering the code below in the verification field.
 
-Please verify your email by clicking the button below:
+---
 
-@component('mail::button', ['url' => $verificationUrl])
-Verify Email
+### ✅ Your Verification Code:
+@component('mail::panel')
+<h2 style="text-align: center; font-size: 28px; letter-spacing: 3px;">{{ $code }}</h2>
 @endcomponent
 
 ---
 
-### Why Verify Your Email?
-- Protect your account from unauthorized access.
-- Access premium features and personalized content.
-- Stay updated with the latest offers and notifications.
+This code will expire in **10 minutes**, so be sure to complete your verification as soon as possible.
 
-If you did not initiate this request, please disregard this email or contact our support team.
+### 🔒 Why is email verification important?
+- Ensures your account is secure
+- Unlocks full access to our features
+- Keeps you in the loop with important updates
 
 ---
 
-{{-- Footer Section --}}
-Thank you for choosing {{ config('app.name') }}!
+If you didn't sign up for a {{ config('app.name') }} account, feel free to ignore this email — no further action is required.
 
-{{ config('app.name') }} Team
+Thanks again for joining us!
+— The **{{ config('app.name') }}** Team
 
 @component('mail::subcopy')
-If you’re having trouble clicking the "Verify Email" button, copy and paste the following URL into your web browser: [{{ $verificationUrl }}]({{ $verificationUrl }})
+Need help? Contact our support team or visit our help center anytime.
 @endcomponent
+
 @endcomponent

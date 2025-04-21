@@ -36,12 +36,14 @@ class RegisterForm extends Component
         // SETTING A TOKEN FOR THE NEW USER
         $length = 40;
         $token = Str::random($length);
+        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
         $user = User::create([
             'name' => $name,
             'email' => $email,
             'password' => $password,
             'token' => $token,
+            'verification_code' => $code,
         ]);
 
         $verificationUrl = URL::temporarySignedRoute(
@@ -50,11 +52,11 @@ class RegisterForm extends Component
             ['token' => $token, ],
         );
 
-        Mail::to($email)->send(new RegisterMail($user, $token, $email, $verificationUrl));
+        Mail::to($email)->send(new RegisterMail($user, $token, $email, $code));
 
-        Auth::login($user);
+        // Auth::login($user);
 
-        return redirect()->route('verify.form')->with(['success' => 'Registeration Successful', 'message' => 'We sent a code to your email. Use the code and verify your email.']);
+        return redirect()->route('email.verify', ['token' => $token])->with(['success' => 'Registeration Successful', 'message' => 'We sent a code to your email. Use the code and verify your email.']);
     }
 
     public function render()

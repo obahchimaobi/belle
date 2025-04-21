@@ -23,15 +23,15 @@ class RegisterMail extends Mailable
 
     public $email;
 
-    public $verificationUrl;
+    public $code;
 
-    public function __construct($user, $token, $email, $verificationUrl)
+    public function __construct($user, $token, $email, $code)
     {
         //
         $this->user = $user;
         $this->token = $token;
         $this->email = $email;
-        $this->verificationUrl = $verificationUrl;
+        $this->code = $code;
     }
 
     /**

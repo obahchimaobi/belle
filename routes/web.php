@@ -18,24 +18,15 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/forgot-password', [AuthController::class, 'forgot_password'])->name('forgot.password');
 
 // EMAIL VERIFICATIONN ROUTE
-Route::get('/email/verify/{token}', function ($token) {
+Route::get('/email/verify/', function () {
+    $token = request()->query('token');
     $user = User::where('token', $token)->firstOrFail();
 
-    // if (! hash_equals(sha1($user->otp), $hash)) {
-    //     abort(403, 'Invalid verification link.');
-    // }
+    return view('auth.email.verify-template', compact('token'));
+})->name('email.verify');
 
-    if ($user->email_verified_at) {
-        return Redirect::route('login')->with('error', 'Your email is already verified.');
-    }
+Route::get('/logout', function () {
+    Auth::logout();
 
-    // $user->update(['email_verified_at' => now()]);
-    $user->email_verified_at = now();
-    $user->save();
-
-    return Redirect::route('login')->with('success', 'Your email has been successfully verified.');
-})->middleware('signed')->name('email.verify');
-
-Route::get('/verify', function () {
-    return view('auth.email.verify-template');
-})->name('verify.form');
+    return redirect()->route('home');
+})->name('logout');

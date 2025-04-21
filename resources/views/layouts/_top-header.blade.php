@@ -38,6 +38,7 @@
                     @endguest
                     @auth
                         <li><a href="{{ route('wishlist') }}">Wishlist</a></li>
+                        <li><a href="{{ route('logout') }}">Logout</a></li>
                     @endauth
                 </ul>
             </div>
