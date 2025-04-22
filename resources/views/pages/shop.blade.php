@@ -27,7 +27,7 @@
                     <div class="closeFilter d-block d-md-none d-lg-none"><i class="icon icon anm anm-times-l"></i>
                     </div>
                     <div class="sidebar_tags">
-                        <!--Categories-->
+                        {{-- <!--Categories-->
                         <div class="sidebar_widget categories filter-widget">
                             <div class="widget-title">
                                 <h2>Categories</h2>
@@ -66,7 +66,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <!--Categories-->
+                        <!--Categories--> --}}
                         <!--Price Filter-->
                         <div class="sidebar_widget filterBox filter-widget">
                             <div class="widget-title">
@@ -135,35 +135,6 @@
                             </div>
                         </div>
                         <!--End Color Swatches-->
-                        <!--Brand-->
-                        <div class="sidebar_widget filterBox filter-widget">
-                            <div class="widget-title">
-                                <h2>Brands</h2>
-                            </div>
-                            <ul>
-                                <li>
-                                    <input type="checkbox" value="allen-vela" id="check1">
-                                    <label for="check1"><span><span></span></span>Allen Vela</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" value="oxymat" id="check3">
-                                    <label for="check3"><span><span></span></span>Oxymat</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" value="vanelas" id="check4">
-                                    <label for="check4"><span><span></span></span>Vanelas</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" value="pagini" id="check5">
-                                    <label for="check5"><span><span></span></span>Pagini</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" value="monark" id="check6">
-                                    <label for="check6"><span><span></span></span>Monark</label>
-                                </li>
-                            </ul>
-                        </div>
-                        <!--End Brand-->
                         <!--Popular Products-->
                         <div class="sidebar_widget">
                             <div class="widget-title">

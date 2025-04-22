@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->string('image')->nullable();
             $table->decimal('price', 10, 2)->nullable();
             $table->decimal('original_price', 10, 2)->nullable();
@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->integer('stock_quantity')->nullable();
             $table->enum('stock_status', ['in_stock', 'out_of_stock', 'pre_order'])->default('in_stock')->nullable();
             $table->timestamp('deleted_at')->nullable();
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }
