@@ -34,6 +34,8 @@ class ForgotPasswordForm extends Component
         );
 
         Mail::to($validate['email'])->send(new ResetMail($name, $token, $resetUrl));
+
+        return redirect()->route('forgot.password')->with('success', 'Password reset link sent');
     }
 
     public function render()

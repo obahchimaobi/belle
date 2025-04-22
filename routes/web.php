@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Mail\RegisterMail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Auth\AuthController;
@@ -24,6 +25,25 @@ Route::get('/email/verify/', function () {
 
     return view('auth.email.verify-template', compact('token'));
 })->name('email.verify');
+
+Route::get('/resend-code', function () {
+    $token = request()->query('token');
+    $user = User::where('token', $token)->firstOrFail();
+
+    $email = $user->email;
+    $code = $user->verification_code;
+
+    Mail::to($email)->send(new RegisterMail($user, $token, $email, $code));
+
+    return redirect()->route('email.verify', ['token' => $token])->with('success', 'A new code has been sent to your email');
+})->name('code.resend');
+
+Route::get('/reset/password', function () {
+    $token = request()->query('token');
+    $user = User::where('token', $token)->firstOrFail();
+
+    return view('auth.reset-password', compact('token'));
+})->name('password.reset')->middleware('signed');
 
 Route::get('/logout', function () {
     Auth::logout();

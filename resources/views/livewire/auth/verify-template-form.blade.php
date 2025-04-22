@@ -22,6 +22,10 @@
 
                     <span wire:loading.delay>Loading...</span>
                 </button>
+                <p class="mb-4">
+                    Didn't get a code?
+                    <a href="{{ route('code.resend', ['token'=>$token]) }}" id="customer_register_link">Resend it</a>
+                </p>
             </div>
         </div>
     </form>
