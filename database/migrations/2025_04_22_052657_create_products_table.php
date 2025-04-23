@@ -31,7 +31,9 @@ return new class extends Migration {
             $table->longText('description')->nullable();
             $table->string('sku')->nullable()->unique();
             $table->integer('stock_quantity')->nullable();
-            $table->enum('stock_status', ['in_stock', 'out_of_stock', 'pre_order'])->default('in_stock')->nullable();
+            $table->enum('stock_status', ['In Stock', 'Out of Stock', 'Pre Order'])
+                ->default('In Stock')
+                ->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();

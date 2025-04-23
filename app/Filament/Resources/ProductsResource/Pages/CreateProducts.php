@@ -88,9 +88,10 @@ class CreateProducts extends CreateRecord
                                                         ->required(),
                                                     Select::make('stock_status')
                                                         ->placeholder('')
+                                                        ->required()
                                                         ->options([
                                                             'In Stock' => 'In Stock',
-                                                            'Out Of Stock' => 'Out Of Stock',
+                                                            'Out of Stock' => 'Out of Stock',
                                                             'Pre Order' => 'Pre Order',
                                                         ]),
                                                 ]),

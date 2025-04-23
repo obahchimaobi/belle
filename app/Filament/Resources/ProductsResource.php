@@ -2,21 +2,26 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\Categories;
 use Filament\Forms;
-use Filament\Infolists\Components\Grid;
-use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\Split;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables;
-// use App\Models\Products;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Filament\Clusters\Products;
+// use App\Models\Products;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\Split;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\Section;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Infolists\Components\Actions\Action;
 use App\Filament\Resources\ProductsResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProductsResource\RelationManagers;
@@ -96,15 +101,81 @@ class ProductsResource extends Resource
                     Grid::make([
                         'xl' => 3
                     ])
-                    ->schema([
-                        TextEntry::make('name'),
-                        TextEntry::make('slug'),
-                        ImageEntry::make('image')
-                            ->circular()
-                            ->label('')
-                            ->alignEnd(),
-                    ])
+                        ->schema([
+                            TextEntry::make('name'),
+                            TextEntry::make('slug'),
+                            ImageEntry::make('image')
+                                ->circular()
+                                ->label('')
+                                ->alignEnd(),
+                            TextEntry::make('created_at')
+                                ->badge()
+                                ->date()
+                                ->color('success'),
+                            TextEntry::make('category.name'),
+                            TextEntry::make('brands.name'),
+                            TextEntry::make('price')
+                                ->money('NGN'),
+                            TextEntry::make('original_price')
+                                ->money('NGN'),
+                            TextEntry::make('discount_percentage'),
+                        ])
                 ]),
+                Section::make('Description')
+                    ->collapsed()
+                    ->headerActions([
+                        Action::make('edit description')
+                            ->form([
+                                RichEditor::make('description')
+                                    ->label('Description'),
+                            ])
+                            ->fillForm(function (\App\Models\Products $record): array {
+                                return [
+                                    'description' => $record->description,
+                                ];
+                            })
+                            ->action(function (array $data, \App\Models\Products $record) {
+                                $record->description = $data['description'];
+                                str($record->description)->sanitizeHtml();
+                                $record->save();
+
+                                Notification::make()
+                                    ->title('Saved Successfully')
+                                    ->success()
+                                    ->send();
+                            })
+                    ])
+                    ->schema([
+                        TextEntry::make('description')
+                            ->label('')
+                    ]),
+                Section::make('Product Highlights')
+                    ->collapsible()
+                    ->schema([
+                        Grid::make([
+                            'xl' => 3
+                        ])
+                        ->schema([
+                            TextEntry::make('label')
+                                ->badge()
+                                ->color(fn (string $state): string => match ($state) {
+                                    'HOT' => 'danger',
+                                    'NEW' => 'success',
+                                    'SALE' => 'warning'
+                                }),
+                            TextEntry::make('rating'),
+                            TextEntry::make('rating_count'),
+                            TextEntry::make('sku'),
+                            TextEntry::make('stock_quantity'),
+                            TextEntry::make('stock_status')
+                                ->badge()
+                                ->color(fn (string $state): string => match ($state) {
+                                    'In Stock' => 'success',
+                                    'Out of Stock' => 'danger',
+                                    'Pre Order' => 'warning'
+                                }) ,
+                        ]),
+                    ]),
             ]);
     }
 
