@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\BrandsResource\Pages;
 
 use Filament\Actions;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Select;
@@ -38,10 +40,13 @@ class CreateBrands extends CreateRecord
                                         ])
                                             ->schema([
                                                 TextInput::make('name')
-                                                    ->required(),
+                                                    ->required()
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                                                 TextInput::make('slug')
                                                     ->dehydrated()
-                                                    ->disabled(),
+                                                    ->required()
+                                                    ->readOnly(),
                                                 TextInput::make('website')
                                                     ->columnSpan(2),
                                                 Toggle::make('visible')

@@ -4,11 +4,17 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Categories;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use App\Filament\Clusters\Products;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CategoriesResource\Pages;
@@ -31,7 +37,14 @@ class CategoriesResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->maxLength(255)
-                    ->default(null),
+                    ->default(null)
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                TextInput::make('slug')
+                    ->readOnly()
+                    ->dehydrated()
+                    ->required(),
+                Toggle::make('visible'),
             ]);
     }
 
@@ -41,6 +54,9 @@ class CategoriesResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('slug'),
+                IconColumn::make('visible')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

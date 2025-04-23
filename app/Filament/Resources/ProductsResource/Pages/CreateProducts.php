@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources\ProductsResource\Pages;
 
-use App\Filament\Resources\ProductsResource;
 use Filament\Actions;
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
-use Filament\Resources\Pages\CreateRecord;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Resources\ProductsResource;
 
 class CreateProducts extends CreateRecord
 {
@@ -38,10 +40,13 @@ class CreateProducts extends CreateRecord
                                         ])
                                             ->schema([
                                                 TextInput::make('name')
-                                                    ->required(),
+                                                    ->required()
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                                                 TextInput::make('slug')
                                                     ->dehydrated()
-                                                    ->disabled(),
+                                                    ->readOnly()
+                                                    ->required(),
                                                 RichEditor::make('description')
                                                     ->columnSpan(2),
                                             ]),
@@ -52,6 +57,7 @@ class CreateProducts extends CreateRecord
                                             FileUpload::make('image')
                                                 ->required()
                                                 ->label('')
+                                                ->disk('public')
                                                 ->image()
                                                 ->imageEditor(),
                                         ]),
@@ -104,7 +110,10 @@ class CreateProducts extends CreateRecord
                                             Select::make('category_id')
                                                 ->required()
                                                 ->searchable()
-                                                ->relationship(name: 'category', titleAttribute: 'id'),
+                                                ->relationship(name: 'category', titleAttribute: 'name'),
+                                            Select::make('brands_id')
+                                                ->searchable()
+                                                ->relationship(name: 'brands', titleAttribute: 'name'),
                                         ]),
                                     Section::make('')
                                         ->schema([

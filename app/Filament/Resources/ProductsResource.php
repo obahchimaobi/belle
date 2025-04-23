@@ -3,6 +3,10 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
 use Filament\Tables;
 // use App\Models\Products;
 use Filament\Forms\Form;
@@ -10,6 +14,9 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Filament\Clusters\Products;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Tables\Actions\ForceDeleteAction;
 use App\Filament\Resources\ProductsResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProductsResource\RelationManagers;
@@ -36,7 +43,8 @@ class ProductsResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
-                    ->image(),
+                    ->image()
+                    ->disk('public'),
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->default(null)
@@ -67,10 +75,36 @@ class ProductsResource extends Resource
                 Forms\Components\TextInput::make('stock_quantity')
                     ->numeric()
                     ->default(null),
-                Forms\Components\TextInput::make('stock_status'),
+                Forms\Components\Select::make('stock_status')
+                    ->options([
+                        'in_stock' => 'In Stock',
+                        'out_of_stock' => 'Out Of Stock',
+                        'pre_order' => 'Pre Order'
+                    ]),
                 Forms\Components\TextInput::make('category_id')
                     ->numeric()
                     ->default(null),
+            ]);
+    }
+
+
+    public static function infolist(\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make([
+                    Grid::make([
+                        'xl' => 3
+                    ])
+                    ->schema([
+                        TextEntry::make('name'),
+                        TextEntry::make('slug'),
+                        ImageEntry::make('image')
+                            ->circular()
+                            ->label('')
+                            ->alignEnd(),
+                    ])
+                ]),
             ]);
     }
 
@@ -82,7 +116,9 @@ class ProductsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')
+                    ->disk('public')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('price')
                     ->money()
                     ->sortable(),
@@ -94,12 +130,6 @@ class ProductsResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('label')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('rating')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('rating_count')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('sku')
@@ -131,6 +161,9 @@ class ProductsResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                ForceDeleteAction::make(),
+                RestoreAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
