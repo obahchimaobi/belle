@@ -18,11 +18,12 @@
                                     <!-- Hover image -->
                                     <img class="hover blur-up lazyload"
                                         data-src="{{ asset('storage/' . $women->product_images->first()->image_path) }}"
-                                        src="{{ asset('assets/images/product-images/product-image1-1.jpg') }}"
+                                        src="{{ asset('storage/' . $women->product_images->first()->image_path) }}"
                                         alt="image" title="product">
                                     <!-- End hover image -->
                                     <!-- product label -->
-                                    <div class="product-labels rectangular"><span class="lbl on-sale">-16%</span> <span class="lbl pr-label1">new</span>
+                                    <div class="product-labels rectangular"><span class="lbl on-sale">-16%</span> <span
+                                            class="lbl pr-label1">new</span>
                                     </div>
                                     <!-- End product label -->
                                 </a>
@@ -35,11 +36,6 @@
                                         Cart</button>
                                 </form>
                                 <div class="button-set">
-                                    <a href="{{ asset('javascript:void(0)') }}" title="Quick View"
-                                        class="quick-view-popup quick-view" data-toggle="modal"
-                                        data-target="#content_quickview">
-                                        <i class="icon anm anm-search-plus-r"></i>
-                                    </a>
                                     <div class="wishlist-btn">
                                         <a class="wishlist add-to-wishlist" href="{{ asset('wishlist.html') }}">
                                             <i class="icon anm anm-heart-l"></i>
@@ -59,14 +55,13 @@
                             <div class="product-details text-center">
                                 <!-- product name -->
                                 <div class="product-name">
-                                    <a href="{{ asset('short-description.html') }}">Edna
-                                        Dress</a>
+                                    <a href="{{ asset('short-description.html') }}">{{ $women->name }}</a>
                                 </div>
                                 <!-- End product name -->
                                 <!-- product price -->
                                 <div class="product-price">
-                                    <span class="old-price">$500.00</span>
-                                    <span class="price">$600.00</span>
+                                    <span class="old-price">{{ $women->price }}</span>
+                                    <span class="price">{{ $women->original_price }}</span>
                                 </div>
                                 <!-- End product price -->
 

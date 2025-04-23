@@ -695,7 +695,7 @@
 
 @section('content2')
     <!--Quick View popup-->
-    <div class="modal fade quick-view-popup" id="content_quickview">
+    {{-- <div class="modal fade quick-view-popup" id="content_quickview">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
@@ -860,7 +860,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!--End Quick View popup-->
 
     <!-- Newsletter Popup -->
