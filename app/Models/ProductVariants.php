@@ -16,6 +16,6 @@ class ProductVariants extends Model
         'product_id',
         'size',
         'color_code',
-        'color_name'
+        'color_name',
     ];
 }

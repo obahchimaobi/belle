@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Auth;
 
-use URL;
-use App\Models\User;
-use Livewire\Component;
 use App\Mail\RegisterMail;
-use Illuminate\Support\Str;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Livewire\Component;
+use URL;
 
 class RegisterForm extends Component
 {
@@ -26,10 +26,10 @@ class RegisterForm extends Component
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8'
+            'password' => 'required|min:8',
         ]);
 
-        $name = $validate['first_name'] . ' ' . $validate['last_name'];
+        $name = $validate['first_name'].' '.$validate['last_name'];
         $email = $validate['email'];
         $password = $validate['password'];
 
@@ -49,7 +49,7 @@ class RegisterForm extends Component
         $verificationUrl = URL::temporarySignedRoute(
             'email.verify',
             now()->addMinutes(10),
-            ['token' => $token, ],
+            ['token' => $token],
         );
 
         Mail::to($email)->send(new RegisterMail($user, $token, $email, $code));

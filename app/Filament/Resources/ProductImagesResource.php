@@ -2,21 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\ProductImages;
-use Filament\Resources\Resource;
 use App\Filament\Clusters\Products;
+use App\Filament\Resources\ProductImagesResource\Pages;
+use App\Models\ProductImages;
+use Filament\Forms;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ProductImagesResource\Pages;
-use App\Filament\Resources\ProductImagesResource\RelationManagers;
 
 class ProductImagesResource extends Resource
 {
     protected static ?string $model = ProductImages::class;
+
     protected static ?string $cluster = Products::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
@@ -35,6 +37,7 @@ class ProductImagesResource extends Resource
                     ->relationship('products', 'name'),
                 Forms\Components\FileUpload::make('image_path')
                     ->image(),
+                Toggle::make('visible'),
             ]);
     }
 
@@ -42,10 +45,14 @@ class ProductImagesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('products_id')
+                Tables\Columns\TextColumn::make('products.name')
                     ->numeric()
+                    ->label('Product Name')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image_path'),
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->circular(),
+                IconColumn::make('visible')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -82,9 +89,6 @@ class ProductImagesResource extends Resource
     {
         return [
             'index' => Pages\ListProductImages::route('/'),
-            'create' => Pages\CreateProductImages::route('/create'),
-            'view' => Pages\ViewProductImages::route('/{record}'),
-            'edit' => Pages\EditProductImages::route('/{record}/edit'),
         ];
     }
 

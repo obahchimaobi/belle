@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Categories extends Model
 {
     use SoftDeletes;
+
     //
     public function products()
     {
@@ -17,6 +18,6 @@ class Categories extends Model
     protected $fillable = [
         'name',
         'slug',
-        'visible'
+        'visible',
     ];
 }

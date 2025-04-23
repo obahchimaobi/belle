@@ -3,9 +3,9 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class VerifyTemplateForm extends Component
 {
@@ -26,10 +26,7 @@ class VerifyTemplateForm extends Component
         return redirect()->route('login')->with('success', 'Email verified successfully');
     }
 
-    public function verify_code()
-    {
-
-    }
+    public function verify_code() {}
 
     public function render()
     {

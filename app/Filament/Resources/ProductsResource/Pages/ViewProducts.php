@@ -4,7 +4,6 @@ namespace App\Filament\Resources\ProductsResource\Pages;
 
 use App\Filament\Resources\ProductsResource;
 use Filament\Actions;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewProducts extends ViewRecord

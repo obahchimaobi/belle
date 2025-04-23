@@ -3,9 +3,9 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Component;
 
 class LoginForm extends Component
 {
@@ -22,7 +22,7 @@ class LoginForm extends Component
 
         $user = User::where('email', $validate['email'])->first();
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login')->with('error', 'Account not found!');
         }
 
@@ -30,11 +30,12 @@ class LoginForm extends Component
             return redirect()->route('login')->with('error', 'Email not verified');
         }
 
-        if ($user && !Hash::check($validate['password'], $user->password)) {
+        if ($user && ! Hash::check($validate['password'], $user->password)) {
             return redirect()->route('login')->with('error', 'Incorrect email or password combination');
         }
 
         Auth::login($user);
+
         return redirect()->route('home');
     }
 

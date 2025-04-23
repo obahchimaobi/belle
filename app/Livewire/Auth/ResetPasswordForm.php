@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Auth;
 
-use Hash;
+use App\Mail\PasswordChanged;
 use App\Models\User;
-use Livewire\Component;
+use Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Url;
-use App\Mail\PasswordChanged;
-use Illuminate\Support\Facades\Mail;
+use Livewire\Component;
 
 class ResetPasswordForm extends Component
 {

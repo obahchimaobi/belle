@@ -2,29 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Models\Categories;
+use App\Filament\Clusters\Products;
+use App\Filament\Resources\ProductsResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
-use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use App\Filament\Clusters\Products;
-// use App\Models\Products;
-use Filament\Infolists\Components\Grid;
-use Filament\Infolists\Components\Split;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Infolists\Components\Section;
-use Filament\Tables\Actions\RestoreAction;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\ImageEntry;
-use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Infolists\Components\Actions\Action;
-use App\Filament\Resources\ProductsResource\Pages;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+// use App\Models\Products;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ProductsResource\RelationManagers;
 
 class ProductsResource extends Resource
 {
@@ -84,7 +81,7 @@ class ProductsResource extends Resource
                     ->options([
                         'in_stock' => 'In Stock',
                         'out_of_stock' => 'Out Of Stock',
-                        'pre_order' => 'Pre Order'
+                        'pre_order' => 'Pre Order',
                     ]),
                 Forms\Components\TextInput::make('category_id')
                     ->numeric()
@@ -92,14 +89,13 @@ class ProductsResource extends Resource
             ]);
     }
 
-
     public static function infolist(\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
     {
         return $infolist
             ->schema([
                 Section::make([
                     Grid::make([
-                        'xl' => 3
+                        'xl' => 3,
                     ])
                         ->schema([
                             TextEntry::make('name'),
@@ -119,7 +115,7 @@ class ProductsResource extends Resource
                             TextEntry::make('original_price')
                                 ->money('NGN'),
                             TextEntry::make('discount_percentage'),
-                        ])
+                        ]),
                 ]),
                 Section::make('Description')
                     ->collapsed()
@@ -143,38 +139,38 @@ class ProductsResource extends Resource
                                     ->title('Saved Successfully')
                                     ->success()
                                     ->send();
-                            })
+                            }),
                     ])
                     ->schema([
                         TextEntry::make('description')
-                            ->label('')
+                            ->label(''),
                     ]),
                 Section::make('Product Highlights')
                     ->collapsible()
                     ->schema([
                         Grid::make([
-                            'xl' => 3
+                            'xl' => 3,
                         ])
-                        ->schema([
-                            TextEntry::make('label')
-                                ->badge()
-                                ->color(fn (string $state): string => match ($state) {
-                                    'HOT' => 'danger',
-                                    'NEW' => 'success',
-                                    'SALE' => 'warning'
-                                }),
-                            TextEntry::make('rating'),
-                            TextEntry::make('rating_count'),
-                            TextEntry::make('sku'),
-                            TextEntry::make('stock_quantity'),
-                            TextEntry::make('stock_status')
-                                ->badge()
-                                ->color(fn (string $state): string => match ($state) {
-                                    'In Stock' => 'success',
-                                    'Out of Stock' => 'danger',
-                                    'Pre Order' => 'warning'
-                                }) ,
-                        ]),
+                            ->schema([
+                                TextEntry::make('label')
+                                    ->badge()
+                                    ->color(fn (string $state): string => match ($state) {
+                                        'HOT' => 'danger',
+                                        'NEW' => 'success',
+                                        'SALE' => 'warning'
+                                    }),
+                                TextEntry::make('rating'),
+                                TextEntry::make('rating_count'),
+                                TextEntry::make('sku'),
+                                TextEntry::make('stock_quantity'),
+                                TextEntry::make('stock_status')
+                                    ->badge()
+                                    ->color(fn (string $state): string => match ($state) {
+                                        'In Stock' => 'success',
+                                        'Out of Stock' => 'danger',
+                                        'Pre Order' => 'warning'
+                                    }),
+                            ]),
                     ]),
             ]);
     }
@@ -187,11 +183,15 @@ class ProductsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('category_type'),
                 Tables\Columns\ImageColumn::make('image')
                     ->disk('public')
                     ->circular(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money()
+                    ->money('NGN')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('original_price')
                     ->numeric()
@@ -214,9 +214,6 @@ class ProductsResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('category_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -234,7 +231,7 @@ class ProductsResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 ForceDeleteAction::make(),
-                RestoreAction::make()
+                RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -2,19 +2,16 @@
 
 namespace App\Filament\Resources\BrandsResource\Pages;
 
-use Filament\Actions;
-use Filament\Forms\Set;
-use Illuminate\Support\Str;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Split;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use App\Filament\Resources\BrandsResource;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Split;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Set;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Str;
 
 class CreateBrands extends CreateRecord
 {
@@ -30,13 +27,13 @@ class CreateBrands extends CreateRecord
                     ->schema([
                         Split::make([
                             Grid::make([
-                                'xl' => 1
+                                'xl' => 1,
                             ])
                                 ->schema([
                                     Section::make([
                                         Grid::make([
                                             'default' => 2,
-                                            'xl' => 2
+                                            'xl' => 2,
                                         ])
                                             ->schema([
                                                 TextInput::make('name')

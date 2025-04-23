@@ -2,20 +2,18 @@
 
 namespace App\Filament\Resources\ProductsResource\Pages;
 
-use Filament\Actions;
-use Filament\Forms\Set;
-use Illuminate\Support\Str;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Split;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Section;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
-use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ProductsResource;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Split;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Set;
+use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Str;
 
 class CreateProducts extends CreateRecord
 {
@@ -31,12 +29,12 @@ class CreateProducts extends CreateRecord
                     ->schema([
                         Split::make([
                             Grid::make([
-                                'xl' => 1
+                                'xl' => 1,
                             ])
                                 ->schema([
                                     Section::make([
                                         Grid::make([
-                                            'xl' => 2
+                                            'xl' => 2,
                                         ])
                                             ->schema([
                                                 TextInput::make('name')
@@ -64,7 +62,7 @@ class CreateProducts extends CreateRecord
                                     Section::make('Pricing')
                                         ->schema([
                                             Grid::make([
-                                                'xl' => 2
+                                                'xl' => 2,
                                             ])
                                                 ->schema([
                                                     TextInput::make('price')
@@ -78,7 +76,7 @@ class CreateProducts extends CreateRecord
                                     Section::make('Inventory')
                                         ->schema([
                                             Grid::make([
-                                                'xl' => 2
+                                                'xl' => 2,
                                             ])
                                                 ->schema([
                                                     TextInput::make('sku')
@@ -98,7 +96,7 @@ class CreateProducts extends CreateRecord
                                         ]),
                                 ])->grow(false),
                             Grid::make([
-                                'xl' => 0
+                                'xl' => 0,
                             ])
                                 ->schema([
                                     Section::make('Status')
@@ -123,7 +121,12 @@ class CreateProducts extends CreateRecord
                                                 ->options([
                                                     'HOT' => 'Hot',
                                                     'NEW' => 'New',
-                                                    'SALE' => 'Sale'
+                                                    'SALE' => 'Sale',
+                                                ]),
+                                            Select::make('category_type')
+                                                ->options([
+                                                    'Men' => 'Men',
+                                                    'Women' => 'Women',
                                                 ]),
                                         ]),
                                 ]),

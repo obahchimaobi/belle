@@ -4,9 +4,9 @@ namespace App\Livewire\Auth;
 
 use App\Mail\ResetMail;
 use App\Models\User;
-use Livewire\Component;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use Livewire\Component;
 
 class ForgotPasswordForm extends Component
 {
@@ -21,7 +21,7 @@ class ForgotPasswordForm extends Component
         // get the user
         $user = User::where('email', $validate['email'])->first();
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('forgot.password')->with('error', 'Email not found.');
         }
 

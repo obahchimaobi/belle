@@ -14,7 +14,7 @@ class Products extends Model
     {
         return $this->belongsTo(Brands::class);
     }
-    
+
     public function category()
     {
         return $this->belongsTo(Categories::class);
@@ -46,5 +46,6 @@ class Products extends Model
         'stock_quantity',
         'stock_status',
         'category_id',
+        'category_type',
     ];
 }

@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('categories')) {
-            Schema::create('categories', function (Blueprint $table) {
-                $table->id();
-                $table->string('name')->nullable()->unique();
-                $table->timestamps();
-            });
-        }
+        Schema::table('products', function (Blueprint $table) {
+            //
+            $table->enum('category_type', ['Men', 'Women'])->nullable()->after('category_id');
+        });
     }
 
     /**
@@ -25,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cartegories');
+        Schema::table('products', function (Blueprint $table) {
+            //
+            $table->dropColumn('category_type');
+        });
     }
 };

@@ -2,27 +2,27 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Set;
-use Filament\Forms\Form;
+use App\Filament\Clusters\Products;
+use App\Filament\Resources\CategoriesResource\Pages;
 use App\Models\Categories;
+use Filament\Forms;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
+use Filament\Forms\Set;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
-use Filament\Resources\Resource;
-use App\Filament\Clusters\Products;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CategoriesResource\Pages;
-use App\Filament\Resources\CategoriesResource\RelationManagers;
+use Illuminate\Support\Str;
 
 class CategoriesResource extends Resource
 {
     protected static ?string $model = Categories::class;
+
     protected static ?string $cluster = Products::class;
 
     protected static ?int $navigationSort = 2;

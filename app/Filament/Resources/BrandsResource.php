@@ -2,21 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Brands;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
 use App\Filament\Clusters\Products;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BrandsResource\Pages;
+use App\Models\Brands;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\BrandsResource\RelationManagers;
 
 class BrandsResource extends Resource
 {
     protected static ?string $model = Brands::class;
+
     protected static ?string $cluster = Products::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bookmark-square';
