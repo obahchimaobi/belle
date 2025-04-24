@@ -80,8 +80,20 @@
                                                 data-zoom-image="{{ asset('storage/' . $get_slug->image) }}"
                                                 alt="" src="{{ asset('storage/' . $get_slug->image) }}" />
                                         </div>
-                                        <div class="product-labels"><span class="lbl on-sale">Sale</span><span
-                                                class="lbl pr-label1">new</span></div>
+                                        <div class="product-labels">
+                                            @if (!is_null($get_slug->label))
+                                                @if ($get_slug->label == 'NEW')
+                                                    <span class="lbl pr-label1">{{ $get_slug->label }}</span>
+                                                @endif
+                                                @if ($get_slug->label == 'HOT')
+                                                    <span class="lbl pr-label2"
+                                                        style="background: #e9a400;">{{ $get_slug->label }}</span>
+                                                @endif
+                                                @if ($get_slug->label == 'SALE')
+                                                    <span class="lbl on-sale">{{ $get_slug->label }}</span>
+                                                @endif
+                                            @endif
+                                        </div>
                                         <div class="product-buttons">
                                             <a href="https://www.youtube.com/watch?v=93A2jOW5Mog"
                                                 class="btn popup-video" title="View Video"><i
@@ -161,9 +173,10 @@
                                     </div>
                                     <p class="product-single__price product-single__price-product-template">
                                         <span class="visually-hidden">Regular price</span>
-                                        @if (!empty($get_slug->price))
+                                        @if (!empty($get_slug->price) && $get_slug->price > $get_slug->original_price)
                                             <s id="ComparePrice-product-template">
-                                                <span class="money">$600.00</span>
+                                                <span
+                                                    class="money">{{ Number::currency($get_slug->price, 'NGN') }}</span>
                                             </s>
                                         @endif
                                         <span
@@ -171,14 +184,23 @@
                                             <span id="ProductPrice-product-template"><span
                                                     class="money">{{ Number::currency($get_slug->original_price, 'NGN') }}</span></span>
                                         </span>
-                                        <span class="discount-badge"> <span class="devider">|</span>&nbsp;
-                                            <span>You Save</span>
-                                            <span id="SaveAmount-product-template"
-                                                class="product-single__save-amount">
-                                                <span class="money">$100.00</span>
+                                        @php
+                                            $price = (int) $get_slug->price;
+                                            $original_price = (int) $get_slug->original_price;
+
+                                            $saved = $price - $original_price;
+                                        @endphp
+                                        @if ($get_slug->discount_percentage > 0)
+                                            <span class="discount-badge"> <span class="devider">|</span>&nbsp;
+                                                <span>You Save</span>
+                                                <span id="SaveAmount-product-template"
+                                                    class="product-single__save-amount">
+                                                    <span class="money">{{ Number::currency($saved, 'NGN') }}</span>
+                                                </span>
+                                                <span
+                                                    class="off">(<span>{{ $get_slug->discount_percentage }}</span>%)</span>
                                             </span>
-                                            <span class="off">(<span>16</span>%)</span>
-                                        </span>
+                                        @endif
                                     </p>
                                     <div class="orderMsg" data-user="23" data-time="24">
                                         <img src="assets/images/order-icon.jpg" alt="" /> <strong
@@ -198,74 +220,43 @@
                                         unknown printer took a galley of type and scrambled it to make a type specimen
                                         book.</p>
                                 </div>
-                                <div id="quantity_message">Hurry! Only <span class="items">4</span> left in stock.
-                                </div>
+                                @if ($get_slug->stock_quantity < 5)
+                                    <div id="quantity_message">Hurry! Only <span
+                                            class="items">{{ $get_slug->stock_quantity }}</span> left in
+                                        stock.
+                                    </div>
+                                @endif
                                 <form method="post" action="http://annimexweb.com/cart/add"
                                     id="product_form_10508262282" accept-charset="UTF-8"
                                     class="product-form product-form-product-template hidedropdown"
                                     enctype="multipart/form-data">
-                                    <div class="swatch clearfix swatch-0 option1" data-option-index="0">
-                                        <div class="product-form__item">
-                                            <label class="header">Color: <span class="slVariant">Red</span></label>
-                                            <div data-value="Black" class="swatch-element color black available">
-                                                <input class="swatchInput" id="swatch-0-black" type="radio"
-                                                    name="option-0" value="Black"><label
-                                                    class="swatchLbl color small" for="swatch-0-black"
-                                                    style="background-color:black;" title="Black"></label>
+                                    @if ($get_slug->product_variants->isNotEmpty())
+                                        @if (!is_null($get_slug->product_variants->first()->color_name))
+                                            <div class="selector-wrapper js product-form__item">
+                                                <label for="SingleOptionSelector-0">Color</label>
+                                                <select
+                                                    class="single-option-selector single-option-selector-product-template product-form__input selectbox"
+                                                    id="SingleOptionSelector-0" data-index="option1">
+                                                    @foreach ($get_slug->product_variants as $colors)
+                                                        <option value="{{ $colors->color_name }}">{{ $colors->color_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                            <div data-value="Maroon" class="swatch-element color maroon available">
-                                                <input class="swatchInput" id="swatch-0-maroon" type="radio"
-                                                    name="option-0" value="Maroon"><label
-                                                    class="swatchLbl color small" for="swatch-0-maroon"
-                                                    style="background-color:maroon;" title="Maroon"></label>
+                                        @endif
+                                        
+                                        @if (!is_null($get_slug->product_variants->first()->size))
+                                            <div class="selector-wrapper js product-form__item">
+                                                <label for="SingleOptionSelector-1">Size</label>
+                                                <select
+                                                    class="single-option-selector single-option-selector-product-template product-form__input selectbox"
+                                                    id="SingleOptionSelector-1" data-index="option2">
+                                                    @foreach ($get_slug->product_variants as $size)
+                                                        <option value="8">{{ $size->size }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                            <div data-value="Blue" class="swatch-element color blue available">
-                                                <input class="swatchInput" id="swatch-0-blue" type="radio"
-                                                    name="option-0" value="Blue"><label
-                                                    class="swatchLbl color small" for="swatch-0-blue"
-                                                    style="background-color:blue;" title="Blue"></label>
-                                            </div>
-                                            <div data-value="Dark Green"
-                                                class="swatch-element color dark-green available">
-                                                <input class="swatchInput" id="swatch-0-dark-green" type="radio"
-                                                    name="option-0" value="Dark Green"><label
-                                                    class="swatchLbl color small" for="swatch-0-dark-green"
-                                                    style="background-color:darkgreen;" title="Dark Green"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swatch clearfix swatch-1 option2" data-option-index="1">
-                                        <div class="product-form__item">
-                                            <label class="header">Size: <span class="slVariant">XS</span></label>
-                                            <div data-value="XS" class="swatch-element xs available">
-                                                <input class="swatchInput" id="swatch-1-xs" type="radio"
-                                                    name="option-1" value="XS">
-                                                <label class="swatchLbl medium rectangle" for="swatch-1-xs"
-                                                    title="XS">XS</label>
-                                            </div>
-                                            <div data-value="S" class="swatch-element s available">
-                                                <input class="swatchInput" id="swatch-1-s" type="radio"
-                                                    name="option-1" value="S">
-                                                <label class="swatchLbl medium rectangle" for="swatch-1-s"
-                                                    title="S">S</label>
-                                            </div>
-                                            <div data-value="M" class="swatch-element m available">
-                                                <input class="swatchInput" id="swatch-1-m" type="radio"
-                                                    name="option-1" value="M">
-                                                <label class="swatchLbl medium rectangle" for="swatch-1-m"
-                                                    title="M">M</label>
-                                            </div>
-                                            <div data-value="L" class="swatch-element l available">
-                                                <input class="swatchInput" id="swatch-1-l" type="radio"
-                                                    name="option-1" value="L">
-                                                <label class="swatchLbl medium rectangle" for="swatch-1-l"
-                                                    title="L">L</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="infolinks"><a href="#sizechart" class="sizelink btn"> Size Guide</a> <a
-                                            href="#productInquiry" class="emaillink btn"> Ask About this Product</a>
-                                    </p>
+                                        @endif
+                                    @endif
                                     <!-- Product Action -->
                                     <div class="product-action clearfix">
                                         <div class="product-form__item--quantity">

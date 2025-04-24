@@ -29,7 +29,15 @@
                                             <span class="lbl on-sale">-{{ $women->discount_percentage }}%</span>
                                         @endif
                                         @if (!is_null($women->label))
-                                            <span class="lbl pr-label1">new</span>
+                                            @if ($women->label == 'NEW')
+                                                <span class="lbl pr-label1">{{ $women->label }}</span>
+                                            @endif
+                                            @if ($women->label == 'HOT')
+                                                <span class="lbl pr-label2" style="background: #e9a400;">{{ $women->label }}</span>
+                                            @endif
+                                            @if ($women->label == 'SALE')
+                                                <span class="lbl on-sale">{{ $women->label }}</span>
+                                            @endif
                                         @endif
                                     </div>
                                     <!-- End product label -->
@@ -62,15 +70,17 @@
                             <div class="product-details text-center">
                                 <!-- product name -->
                                 <div class="product-name">
-                                    <a href="{{ route('product.details', ['slug' => $women->slug]) }}">{{ $women->name }}</a>
+                                    <a
+                                        href="{{ route('product.details', ['slug' => $women->slug]) }}">{{ $women->name }}</a>
                                 </div>
                                 <!-- End product name -->
                                 <!-- product price -->
                                 <div class="product-price">
-                                    @if (!empty($women->price))
+                                    @if (!empty($women->price) && $women->price > $women->original_price)
                                         <span class="old-price">{{ Number::currency($women->price, 'NGN') }}</span>
                                     @endif
-                                    <span class="price" style="color: #e95144;">{{ Number::currency($women->original_price, 'NGN') }}</span>
+                                    <span class="price"
+                                        style="color: #e95144;">{{ Number::currency($women->original_price, 'NGN') }}</span>
                                 </div>
                                 <!-- End product price -->
 

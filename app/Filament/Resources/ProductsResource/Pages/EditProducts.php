@@ -79,11 +79,13 @@ class EditProducts extends EditRecord
                                                     TextInput::make('price')
                                                         ->required()
                                                         ->live(onBlur: true)
+                                                        ->label('Original Price')
                                                         ->afterStateUpdated(fn($state, callable $set, callable $get) =>
                                                             static::calculateDiscount($get, $set)),
 
                                                     TextInput::make('original_price')
-                                                        ->required()
+                                                        ->default('0')
+                                                        ->label('Final Price')
                                                         ->live(onBlur: true)
                                                         ->afterStateUpdated(fn($state, callable $set, callable $get) =>
                                                             static::calculateDiscount($get, $set)),
@@ -159,8 +161,8 @@ class EditProducts extends EditRecord
 
     protected static function calculateDiscount($get, $set)
     {
-        $price = (int) $get('price');
-        $originalPrice = (int) $get('original_price');
+        $price = (int) $get('original_price');
+        $originalPrice = (int) $get('price');
 
         if ($originalPrice > 0 && $price > 0 && $price < $originalPrice) {
             $discount = (($originalPrice - $price) / $originalPrice) * 100;
