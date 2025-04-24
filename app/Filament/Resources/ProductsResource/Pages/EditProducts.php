@@ -76,12 +76,16 @@ class EditProducts extends EditRecord
                                                 'xl' => 2,
                                             ])
                                                 ->schema([
-                                                    TextInput::make('price')
-                                                        ->required(),
+                                                    TextInput::make('price'),
                                                     TextInput::make('original_price')
                                                         ->required(),
                                                     TextInput::make('discount_percentage')
                                                         ->label('Percentage Discount'),
+                                                    Select::make('currency')
+                                                        ->options([
+                                                            'NGN' => 'Naira',
+                                                            '$' => 'USD'
+                                                        ])
                                                 ]),
                                         ]),
                                     Section::make('Inventory')

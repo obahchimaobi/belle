@@ -9,7 +9,7 @@
                             <!-- start product image -->
                             <div class="product-image">
                                 <!-- start product image -->
-                                <a href="{{ route('product.details', ['slug'=>$women->slug]) }}">
+                                <a href="{{ route('product.details', ['slug' => $women->slug]) }}">
                                     <!-- image -->
                                     <img class="primary blur-up lazyload"
                                         data-src="{{ asset('storage/' . $women->image) }}"
@@ -24,8 +24,13 @@
                                     @endif
                                     <!-- End hover image -->
                                     <!-- product label -->
-                                    <div class="product-labels rectangular"><span class="lbl on-sale">-16%</span> <span
-                                            class="lbl pr-label1">new</span>
+                                    <div class="product-labels rectangular">
+                                        @if (!is_null($women->discount_percentage))
+                                            <span class="lbl on-sale">-{{ $women->discount_percentage }}%</span>
+                                        @endif
+                                        @if (!is_null($women->label))
+                                            <span class="lbl pr-label1">new</span>
+                                        @endif
                                     </div>
                                     <!-- End product label -->
                                 </a>
@@ -57,13 +62,15 @@
                             <div class="product-details text-center">
                                 <!-- product name -->
                                 <div class="product-name">
-                                    <a href="{{ asset('short-description.html') }}">{{ $women->name }}</a>
+                                    <a href="{{ route('product.details', ['slug' => $women->slug]) }}">{{ $women->name }}</a>
                                 </div>
                                 <!-- End product name -->
                                 <!-- product price -->
                                 <div class="product-price">
-                                    <span class="old-price">{{ $women->price }}</span>
-                                    <span class="price">{{ $women->original_price }}</span>
+                                    @if (!empty($women->price))
+                                        <span class="old-price">{{ $women->currency }}{{ $women->price }}</span>
+                                    @endif
+                                    <span class="price" style="color: #e95144;">{{ $women->currency }} {{ $women->original_price }}</span>
                                 </div>
                                 <!-- End product price -->
 
