@@ -25,7 +25,7 @@
                                     <!-- End hover image -->
                                     <!-- product label -->
                                     <div class="product-labels rectangular">
-                                        @if (!is_null($women->discount_percentage))
+                                        @if (!is_null($women->discount_percentage) && $women->discount_percentage > 0)
                                             <span class="lbl on-sale">-{{ $women->discount_percentage }}%</span>
                                         @endif
                                         @if (!is_null($women->label))
@@ -68,9 +68,9 @@
                                 <!-- product price -->
                                 <div class="product-price">
                                     @if (!empty($women->price))
-                                        <span class="old-price">{{ $women->currency }}{{ $women->price }}</span>
+                                        <span class="old-price">{{ Number::currency($women->price, 'NGN') }}</span>
                                     @endif
-                                    <span class="price" style="color: #e95144;">{{ $women->currency }} {{ $women->original_price }}</span>
+                                    <span class="price" style="color: #e95144;">{{ Number::currency($women->original_price, 'NGN') }}</span>
                                 </div>
                                 <!-- End product price -->
 

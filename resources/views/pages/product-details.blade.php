@@ -169,7 +169,7 @@
                                         <span
                                             class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
                                             <span id="ProductPrice-product-template"><span
-                                                    class="money">{{ $get_slug->currency }} {{ Number::format($get_slug->original_price, precision: 2) }}</span></span>
+                                                    class="money">{{ Number::currency($get_slug->original_price, 'NGN') }}</span></span>
                                         </span>
                                         <span class="discount-badge"> <span class="devider">|</span>&nbsp;
                                             <span>You Save</span>

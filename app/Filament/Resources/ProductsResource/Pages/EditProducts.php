@@ -51,7 +51,7 @@ class EditProducts extends EditRecord
                                                 TextInput::make('name')
                                                     ->required()
                                                     ->live(onBlur: true)
-                                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                                                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
                                                 TextInput::make('slug')
                                                     ->dehydrated()
                                                     ->readOnly()
@@ -76,16 +76,22 @@ class EditProducts extends EditRecord
                                                 'xl' => 2,
                                             ])
                                                 ->schema([
-                                                    TextInput::make('price'),
+                                                    TextInput::make('price')
+                                                        ->required()
+                                                        ->live(onBlur: true)
+                                                        ->afterStateUpdated(fn($state, callable $set, callable $get) =>
+                                                            static::calculateDiscount($get, $set)),
+
                                                     TextInput::make('original_price')
-                                                        ->required(),
+                                                        ->required()
+                                                        ->live(onBlur: true)
+                                                        ->afterStateUpdated(fn($state, callable $set, callable $get) =>
+                                                            static::calculateDiscount($get, $set)),
+
                                                     TextInput::make('discount_percentage')
-                                                        ->label('Percentage Discount'),
-                                                    Select::make('currency')
-                                                        ->options([
-                                                            'NGN' => 'Naira',
-                                                            '$' => 'USD'
-                                                        ])
+                                                        ->label('Percentage Discount')
+                                                        ->readOnly(), // Make it non-editable since it's auto-calculated
+
                                                 ]),
                                         ]),
                                     Section::make('Inventory')
@@ -146,27 +152,22 @@ class EditProducts extends EditRecord
                                         ]),
                                 ]),
                         ])->from('md'),
-                        // Grid::make([
-                        //     'xl' => 3
-                        // ])
-                        // ->schema([
-                        //     Section::make([
-                        //         Section::make([
-                        //             Grid::make([
-                        //                 'xl' => 2
-                        //             ])
-                        //                 ->schema([
-                        //                     TextInput::make('name'),
-                        //                     TextInput::make('slug')
-                        //                         ->dehydrated()
-                        //                         ->disabled(),
-                        //                     RichEditor::make('description')
-                        //                         ->columnSpan(2),
-                        //                 ]),
-                        //         ]),
-                        //     ]),
-                        // ]),
+
                     ]),
             ]);
     }
+
+    protected static function calculateDiscount($get, $set)
+    {
+        $price = (int) $get('price');
+        $originalPrice = (int) $get('original_price');
+
+        if ($originalPrice > 0 && $price > 0 && $price < $originalPrice) {
+            $discount = (($originalPrice - $price) / $originalPrice) * 100;
+            $set('discount_percentage', round($discount));
+        } else {
+            $set('discount_percentage', 0);
+        }
+    }
+
 }
