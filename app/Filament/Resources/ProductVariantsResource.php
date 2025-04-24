@@ -2,31 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\Products;
-use App\Filament\Resources\ProductImagesResource\Pages;
-use App\Models\ProductImages;
 use Filament\Forms;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ProductVariants;
+use Filament\Resources\Resource;
+use App\Filament\Clusters\Products;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ProductVariantsResource\Pages;
+use App\Filament\Resources\ProductVariantsResource\RelationManagers;
 
-class ProductImagesResource extends Resource
+class ProductVariantsResource extends Resource
 {
-    protected static ?string $model = ProductImages::class;
-
+    protected static ?string $model = ProductVariants::class;
     protected static ?string $cluster = Products::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-photo';
+    protected static ?int $navigationSort = 5;
 
-    protected static ?string $activeNavigationIcon = 'heroicon-m-photo';
-
-    protected static ?int $navigationSort = 4;
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -36,9 +31,16 @@ class ProductImagesResource extends Resource
                     ->required()
                     ->searchable()
                     ->relationship('products', 'name'),
-                Forms\Components\FileUpload::make('image_path')
-                    ->image(),
-                Toggle::make('visible'),
+                Forms\Components\TextInput::make('size')
+                    ->maxLength(255)
+                    ->default(null)
+                    ->required(),
+                Forms\Components\TextInput::make('color_code')
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\TextInput::make('color_name')
+                    ->maxLength(255)
+                    ->default(null),
             ]);
     }
 
@@ -48,12 +50,14 @@ class ProductImagesResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('products.name')
                     ->numeric()
-                    ->label('Product Name')
+                    ->label('Product')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image_path')
-                    ->circular(),
-                IconColumn::make('visible')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('size')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('color_code')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('color_name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -67,9 +71,10 @@ class ProductImagesResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -80,17 +85,10 @@ class ProductImagesResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProductImages::route('/'),
+            'index' => Pages\ManageProductVariants::route('/'),
         ];
     }
 

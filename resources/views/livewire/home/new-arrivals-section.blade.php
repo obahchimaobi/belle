@@ -9,17 +9,19 @@
                             <!-- start product image -->
                             <div class="product-image">
                                 <!-- start product image -->
-                                <a href="{{ asset('short-description.html') }}">
+                                <a href="{{ route('product.details', ['slug'=>$women->slug]) }}">
                                     <!-- image -->
                                     <img class="primary blur-up lazyload"
                                         data-src="{{ asset('storage/' . $women->image) }}"
                                         src="{{ asset('storage/' . $women->image) }}" alt="image" title="product">
                                     <!-- End image -->
                                     <!-- Hover image -->
-                                    <img class="hover blur-up lazyload"
-                                        data-src="{{ asset('storage/' . $women->product_images->first()->image_path) }}"
-                                        src="{{ asset('storage/' . $women->product_images->first()->image_path) }}"
-                                        alt="image" title="product">
+                                    @if ($women->product_images->isNotEmpty())
+                                        <img class="hover blur-up lazyload"
+                                            data-src="{{ asset('storage/' . $women->product_images->first()->image_path) }}"
+                                            src="{{ asset('storage/' . $women->product_images->first()->image_path) }}"
+                                            alt="image" title="product">
+                                    @endif
                                     <!-- End hover image -->
                                     <!-- product label -->
                                     <div class="product-labels rectangular"><span class="lbl on-sale">-16%</span> <span
@@ -74,30 +76,14 @@
                                 </div>
                                 <!-- Variant -->
                                 <ul class="swatches">
-                                    <li class="swatch medium rounded"><img
-                                            src="{{ asset('assets/images/product-images/variant1.jpg') }}"
-                                            alt="image" />
-                                    </li>
-                                    <li class="swatch medium rounded"><img
-                                            src="{{ asset('assets/images/product-images/variant2.jpg') }}"
-                                            alt="image" />
-                                    </li>
-                                    <li class="swatch medium rounded"><img
-                                            src="{{ asset('assets/images/product-images/variant3.jpg') }}"
-                                            alt="image" />
-                                    </li>
-                                    <li class="swatch medium rounded"><img
-                                            src="{{ asset('assets/images/product-images/variant4.jpg') }}"
-                                            alt="image" />
-                                    </li>
-                                    <li class="swatch medium rounded"><img
-                                            src="{{ asset('assets/images/product-images/variant5.jpg') }}"
-                                            alt="image" />
-                                    </li>
-                                    <li class="swatch medium rounded"><img
-                                            src="{{ asset('assets/images/product-images/variant6.jpg') }}"
-                                            alt="image" />
-                                    </li>
+                                    @foreach ($women->product_images as $image)
+                                        @if (!$loop->first)
+                                            <li class="swatch medium rounded">
+                                                <img src="{{ asset('storage/' . $image->image_path) }}"
+                                                    alt="image" />
+                                            </li>
+                                        @endif
+                                    @endforeach
                                 </ul>
                                 <!-- End Variant -->
                             </div>

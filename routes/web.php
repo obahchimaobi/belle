@@ -50,3 +50,6 @@ Route::get('/logout', function () {
 
     return redirect()->route('home');
 })->name('logout');
+
+
+Route::get('/{slug}', [PageController::class, 'product_details'])->name('product.details');

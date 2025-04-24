@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductVariants extends Model
 {
+    use SoftDeletes;
+
     //
     public function products()
     {
@@ -13,7 +16,7 @@ class ProductVariants extends Model
     }
 
     protected $fillable = [
-        'product_id',
+        'products_id',
         'size',
         'color_code',
         'color_name',
