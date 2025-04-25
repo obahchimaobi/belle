@@ -40,7 +40,16 @@ class CreateProducts extends CreateRecord
                                                 TextInput::make('name')
                                                     ->required()
                                                     ->live(onBlur: true)
-                                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                                                    ->afterStateUpdated(function (Set $set, ?string $state) {
+                                                        $slug = Str::slug($state);
+                                                        $prefix = 'PRD'; // Or dynamically from category, etc.
+                                                        $shortName = strtoupper(substr(preg_replace('/[^A-Za-z0-9]/', '', $state), 0, 3));
+                                                        $random = strtoupper(Str::random(4));
+                                                        $sku = "{$prefix}-{$shortName}-{$random}";
+
+                                                        $set('slug', $slug);
+                                                        $set('sku', $sku);
+                                                    }),
                                                 TextInput::make('slug')
                                                     ->dehydrated()
                                                     ->readOnly()

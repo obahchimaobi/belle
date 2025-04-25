@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             //
-            $table->enum('category_type', ['Men', 'Women'])->nullable()->after('category_id');
+            $table->enum('category_type', ['Men', 'Women', 'Sale'])->nullable()->after('category_id');
         });
     }
 

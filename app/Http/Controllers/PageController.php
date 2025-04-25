@@ -39,7 +39,7 @@ class PageController extends Controller
 
     public function product_details($slug)
     {
-        $get_slug = Products::where('slug', $slug)->firstOrFail();
+        $get_slug = Products::where('slug', $slug)->where('status', true)->firstOrFail();
 
         return view('pages.product-details', compact('get_slug'));
     }

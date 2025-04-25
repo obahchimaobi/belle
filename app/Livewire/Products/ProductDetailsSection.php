@@ -72,6 +72,8 @@ class ProductDetailsSection extends Component
         ]);
 
         $this->is_in_cart = true;
+
+        $this->reset(['product_color', 'product_size', 'product_quantity']);
     }
 
     public function removeBtn()
@@ -80,6 +82,8 @@ class ProductDetailsSection extends Component
             ->where('products_id', $this->product_id)
             ->delete();
         $this->is_in_cart = false;
+
+        $this->reset(['product_color', 'product_size', 'product_quantity']);
     }
 
     public function render()

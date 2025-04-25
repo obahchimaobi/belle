@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Clusters\Products;
 use App\Filament\Resources\ProductsResource\Pages;
+use App\Filament\Resources\ProductsResource\Widgets\ProductOverview;
 use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Form;

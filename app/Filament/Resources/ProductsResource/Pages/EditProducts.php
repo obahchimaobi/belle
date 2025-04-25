@@ -35,7 +35,7 @@ class EditProducts extends EditRecord
         return $form
             ->schema([
                 Grid::make([
-                    'xl' => 1,
+                    'xl' => 0,
                 ])
                     ->schema([
                         Split::make([
@@ -51,13 +51,22 @@ class EditProducts extends EditRecord
                                                 TextInput::make('name')
                                                     ->required()
                                                     ->live(onBlur: true)
-                                                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                                                    ->afterStateUpdated(function (Set $set, ?string $state) {
+                                                        $slug = Str::slug($state);
+                                                        $prefix = 'PRD'; // Or dynamically from category, etc.
+                                                        $shortName = strtoupper(substr(preg_replace('/[^A-Za-z0-9]/', '', $state), 0, 3));
+                                                        $random = strtoupper(Str::random(4));
+                                                        $sku = "{$prefix}-{$shortName}-{$random}";
+
+                                                        $set('slug', $slug);
+                                                        $set('sku', $sku);
+                                                    }),
                                                 TextInput::make('slug')
                                                     ->dehydrated()
                                                     ->readOnly()
                                                     ->required(),
                                                 RichEditor::make('description')
-                                                    ->columnSpan(2),
+                                                    ->columnSpanFull(),
                                             ]),
                                     ]),
                                     Section::make('Images')
@@ -103,7 +112,8 @@ class EditProducts extends EditRecord
                                             ])
                                                 ->schema([
                                                     TextInput::make('sku')
-                                                        ->required(),
+                                                        ->required()
+                                                        ->label('SKU (Stock Keeping Unit)'),
                                                     TextInput::make('stock_quantity')
                                                         ->label('Quantity')
                                                         ->required(),
@@ -117,7 +127,7 @@ class EditProducts extends EditRecord
                                                         ]),
                                                 ]),
                                         ]),
-                                ])->grow(false),
+                                ])->grow(true),
                             Grid::make([
                                 'xl' => 0,
                             ])
@@ -152,7 +162,7 @@ class EditProducts extends EditRecord
                                                     'Women' => 'Women',
                                                 ]),
                                         ]),
-                                ]),
+                                ])->grow(false),
                         ])->from('md'),
 
                     ]),
