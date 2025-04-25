@@ -45,11 +45,7 @@
                                 <!-- end product image -->
 
                                 <!-- Start product button -->
-                                <form class="variants add" action="#"
-                                    onclick="window.location.href="{{ asset('cart.html') }}""method="post">
-                                    <button class="btn btn-addto-cart" type="button" tabindex="0">Add To
-                                        Cart</button>
-                                </form>
+                                <livewire:cart.add-to-cart-form :women="$women" />
                                 <div class="button-set">
                                     <div class="wishlist-btn">
                                         <a class="wishlist add-to-wishlist" href="{{ asset('wishlist.html') }}">

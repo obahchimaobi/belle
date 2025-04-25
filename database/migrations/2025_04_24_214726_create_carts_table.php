@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('users_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('email');
+            $table->string('name');
             $table->string('session_id')->nullable();
             $table->foreignId('products_id')->nullable()->constrained()->onDelete('set null');
             $table->string('product_image');

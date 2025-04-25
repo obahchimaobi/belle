@@ -25,6 +25,8 @@ class ProductDetailsSection extends Component
 
     public $product_quantity = 1;
 
+    public $is_in_cart;
+
     public function increaseQuantity()
     {
         $this->product_quantity++;
@@ -44,9 +46,12 @@ class ProductDetailsSection extends Component
         $this->product_name = $this->get_slug->name;
         $this->product_image = $this->get_slug->image;
         $this->product_price = $this->get_slug->original_price;
+
+        $this->is_in_cart = Cart::where('users_id', auth()->user()->id)
+            ->where('products_id', $this->product_id)->exists();
     }
 
-    public function add_to_cart()
+    public function addBtn()
     {
         $validate = $this->validate([
             'product_color' => '',
@@ -56,6 +61,8 @@ class ProductDetailsSection extends Component
 
         Cart::updateOrCreate([
             'users_id' => $this->user_id,
+            'email' => auth()->user()->email,
+            'name' => auth()->user()->name,
             'products_id' => $this->product_id,
             'product_image' => $this->product_image,
             'color' => $validate['product_color'],
@@ -63,6 +70,16 @@ class ProductDetailsSection extends Component
             'quantity' => $validate['product_quantity'],
             'price' => $this->product_price
         ]);
+
+        $this->is_in_cart = true;
+    }
+
+    public function removeBtn()
+    {
+        Cart::where('users_id', auth()->user()->id)
+            ->where('products_id', $this->product_id)
+            ->delete();
+        $this->is_in_cart = false;
     }
 
     public function render()

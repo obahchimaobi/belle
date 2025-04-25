@@ -65,15 +65,20 @@ class CartResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('users_id')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Added By')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('session_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('products_id')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('products.name')
                     ->numeric()
+                    ->label('Product')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('product_image'),
+                Tables\Columns\ImageColumn::make('product_image')
+                    ->circular()
+                    ->label('Image'),
                 Tables\Columns\TextColumn::make('color')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('size')
@@ -84,7 +89,8 @@ class CartResource extends Resource
                 Tables\Columns\TextColumn::make('price')
                     ->money()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
