@@ -60,4 +60,9 @@ class User extends Authenticatable implements FilamentUser
 
         return true; // Allow access to other panels
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

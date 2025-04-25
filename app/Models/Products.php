@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -28,6 +29,11 @@ class Products extends Model
     public function product_variants()
     {
         return $this->hasMany(ProductVariants::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
     }
 
     protected $fillable = [
