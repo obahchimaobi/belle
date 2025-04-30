@@ -12,8 +12,20 @@ class VerifyTemplateForm extends Component
     #[Url(as: 'token')]
     public $token = '';
 
+    public $code_digits = [];
+
+    public function getCodeProperty()
+    {
+        return implode('', $this->code_digits);
+    }
+
     public function verify_email()
     {
+        $this->validate([
+            'code_digits' => 'array|size:6',
+            'code_digits.*' => 'required|string|size:1',
+        ]);
+        
         // get user based on the token
         $user = User::where('token', $this->token)->firstOrFail();
 
@@ -26,7 +38,9 @@ class VerifyTemplateForm extends Component
         return redirect()->route('login')->with('success', 'Email verified successfully');
     }
 
-    public function verify_code() {}
+    public function verify_code()
+    {
+    }
 
     public function render()
     {

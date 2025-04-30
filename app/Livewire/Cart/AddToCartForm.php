@@ -49,6 +49,9 @@ class AddToCartForm extends Component
         ]);
 
         $this->is_in_cart = true;
+
+        session(['cart_count' => Cart::where('users_id', $this->user_id)->count()]);
+        $this->dispatch('cart-updated');
     }
 
     public function removeBtn()
@@ -57,6 +60,9 @@ class AddToCartForm extends Component
             ->where('products_id', $this->product_id)
             ->delete();
         $this->is_in_cart = false;
+
+        session(['cart_count' => Cart::where('users_id', $this->user_id)->count()]);
+        $this->dispatch('cart-updated');
     }
 
     public function render()
