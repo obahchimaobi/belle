@@ -4,6 +4,7 @@ namespace App\Livewire\Products;
 
 use App\Models\Cart;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class ProductDetailsSection extends Component
 {
@@ -79,10 +80,21 @@ class ProductDetailsSection extends Component
         $this->reset(['product_color', 'product_size', 'product_quantity']);
     }
 
-    public function removeBtn()
+    #[On('item-removed')]
+    public function removeBtn($id)
+    {
+        if ($this->product_id == $id) { // Only update if this component relates to the removed product
+            $this->is_in_cart = false;
+        }
+
+        session(['cart_count' => Cart::where('users_id', $this->user_id)->count()]);
+        $this->dispatch('cart-updated');
+    }
+
+    public function remove($id)
     {
         Cart::where('users_id', auth()->user()->id)
-            ->where('products_id', $this->product_id)
+            ->where('products_id', $id)
             ->delete();
         $this->is_in_cart = false;
 

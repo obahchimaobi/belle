@@ -17,7 +17,7 @@
                                     title="" />
                             </a>
                             <div class="product-details">
-                                <a href="{{ asset('#') }}" class="remove"><i class="anm anm-times-l"
+                                <a wire:click='remove_item({{ $cart->products_id }})' class="remove"><i class="anm anm-times-l"
                                         aria-hidden="true"></i></a>
                                 <a class="pName" href="{{ asset('cart.html') }}">{{ $cart->products->name }}</a>
                                 <div class="variant-cart">
@@ -29,17 +29,15 @@
                                 <div class="wrapQtyBtn">
                                     <div class="qtyField">
                                         <span class="label">Qty:</span>
-                                        <a class="qtyBtn minus" href="{{ asset('javascript:void(0);') }}"><i
-                                                class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                        <input type="text" id="Quantity" name="quantity" value="{{ $cart->quantity }}"
-                                            class="product-form__input qty">
-                                        <a class="qtyBtn plus" href="{{ asset('javascript:void(0);') }}"><i
-                                                class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                        <a class="qtyBtn minus" wire:click='decreaseQty'><i class="fa anm anm-minus-r" aria-hidden="true"></i>
+                                        </a>
+                                        <input type="text" id="Quantity" name="quantity" value="{{ $cart->quantity }}" class="product-form__input qty" wire:model.debounce.500ms="quantity">
+                                        <a class="qtyBtn plus" wire:click='decreaseQty'><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
                                 <div class="priceRow">
                                     <div class="product-price">
-                                        <span class="money">$59.00</span>
+                                        <span class="money">{{ Number::currency($cart->price, 'NGN') }}</span>
                                     </div>
                                 </div>
                             </div>

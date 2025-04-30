@@ -21,6 +21,15 @@ class CartLogo extends Component
         $this->count = session('cart_count', Cart::where('users_id', auth()->user()->id)->count());
     }
 
+    public function remove_item($id)
+    {
+        Cart::where('users_id', auth()->user()->id)->where('products_id', $id)->delete();
+
+        session(['cart_count' => Cart::where('users_id', auth()->user()->id)->count()]);
+        $this->dispatch('cart-updated');
+        $this->dispatch('item-removed', $id);
+    }
+
     public function render()
     {
         $get_cart = Cart::where('users_id', auth()->user()->id)->limit(2)->get();

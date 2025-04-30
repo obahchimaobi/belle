@@ -3,6 +3,7 @@
 namespace App\Livewire\Cart;
 
 use App\Models\Cart;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class AddToCartForm extends Component
@@ -54,10 +55,21 @@ class AddToCartForm extends Component
         $this->dispatch('cart-updated');
     }
 
-    public function removeBtn()
+    #[On('item-removed')]
+    public function removeBtn($id)
+    {
+        if ($this->product_id == $id) { // Only update if this component relates to the removed product
+            $this->is_in_cart = false;
+        }
+
+        session(['cart_count' => Cart::where('users_id', $this->user_id)->count()]);
+        $this->dispatch('cart-updated');
+    }
+
+    public function remove($id)
     {
         Cart::where('users_id', auth()->user()->id)
-            ->where('products_id', $this->product_id)
+            ->where('products_id', $id)
             ->delete();
         $this->is_in_cart = false;
 

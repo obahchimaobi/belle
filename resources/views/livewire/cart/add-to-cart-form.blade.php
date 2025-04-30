@@ -7,7 +7,7 @@
         <input type="hidden" readonly value="{{ $women->image }}" wire:model='product_image'>
         <input type="hidden" readonly value="{{ $women->original_price }}" wire:model='product_price'>
         <button class="btn btn-addto-cart" type="button" tabindex="0"
-            wire:click="{{ $is_in_cart ? 'removeBtn' : 'addBtn' }}" @if ($women->stock_status === 'Out of Stock') disabled @endif>
+            wire:click="{{ $is_in_cart ? 'remove(' . $women->id . ')' : 'addBtn' }}" @if ($women->stock_status === 'Out of Stock') disabled @endif>
             <span>
                 @php
                     echo match (true) {

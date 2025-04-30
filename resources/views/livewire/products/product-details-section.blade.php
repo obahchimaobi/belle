@@ -61,7 +61,7 @@
             </div>
             <div class="product-form__item--submit">
                 <button type="submit" name="add" class="btn product-form__cart-submit"
-                    wire:click="{{ $is_in_cart ? 'removeBtn' : 'addBtn' }}" @if ($get_slug->stock_status === 'Out of Stock') disabled @endif>
+                    wire:click="{{ $is_in_cart ? 'remove(' . $get_slug->id . ')' : 'addBtn' }}" @if ($get_slug->stock_status === 'Out of Stock') disabled @endif>
                     <span>
                         @php
                             echo match (true) {
