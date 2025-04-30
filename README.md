@@ -20,11 +20,11 @@
 
 ## 🧰 Tech Stack
 
-- **Backend:** Laravel
+- **Backend:** Laravel / Livewire
 - **Frontend:** Blade + Bootstrap or Tailwind CSS
 - **Database:** MySQL / SQLite
-- **Authentication:** Laravel Breeze / Jetstream (configurable)
-- **Admin Panel:** Custom dashboard or Laravel Nova
+- **Authentication:** Custom Authentication
+- **Admin Panel:** FilamentPHP
 - **Payment Integration:** Stripe, Paystack, or Flutterwave (planned)
 
 ---
