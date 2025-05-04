@@ -51,7 +51,7 @@
                         </a>
 
                         <input type="text" id="Quantity" name="quantity" class="product-form__input qty"
-                            wire:model='product_quantity' readonly>
+                            wire:model.live='product_quantity' readonly value="{{ $get_slug->quantity }}">
 
                         <a class="qtyBtn plus" href="javascript:void(0);" wire:click="increaseQuantity">
                             <i class="fa anm anm-plus-r" aria-hidden="true"></i>
