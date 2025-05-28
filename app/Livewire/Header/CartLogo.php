@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 class CartLogo extends Component
 {
     public $count;
+    public $total_price;
 
     public function mount()
     {
@@ -19,6 +20,7 @@ class CartLogo extends Component
     public function updateCount()
     {
         $this->count = session('cart_count', Cart::where('users_id', auth()->user()->id)->count());
+        $this->total_price = Cart::where('users_id', auth()->user()->id)->sum('price');
     }
 
     public function remove_item($id)

@@ -48,7 +48,7 @@
             <div class="total">
                 <div class="total-in">
                     <span class="label">Cart Subtotal:</span><span class="product-price"><span
-                            class="money">$748.00</span></span>
+                            class="money">{{ Number::currency($total_price, 'NGN') }}</span></span>
                 </div>
                 <div class="buttonSet text-center">
                     <a href="{{ asset('cart.html') }}" class="btn btn-secondary btn--small">View
