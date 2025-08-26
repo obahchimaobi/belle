@@ -125,7 +125,7 @@ class ProductDetailsSection extends Component
     {
         Cart::where('users_id', auth()->user()->id)
             ->where('products_id', $id)
-            ->delete();
+            ->forceDelete();
         $this->is_in_cart = false;
 
         session(['cart_count' => Cart::where('users_id', $this->user_id)->count()]);

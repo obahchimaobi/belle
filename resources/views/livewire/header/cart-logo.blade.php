@@ -32,7 +32,7 @@
                                         <a class="qtyBtn minus" wire:click='decreaseQty'><i class="fa anm anm-minus-r" aria-hidden="true"></i>
                                         </a>
                                         <input type="text" id="Quantity" name="quantity" value="{{ $cart->quantity }}" class="product-form__input qty" wire:model.debounce.500ms="quantity">
-                                        <a class="qtyBtn plus" wire:click='decreaseQty'><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                        <a class="qtyBtn plus" wire:click="increaseQty('{{ $cart->id }}')"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
                                 <div class="priceRow">
@@ -48,7 +48,8 @@
             <div class="total">
                 <div class="total-in">
                     <span class="label">Cart Subtotal:</span><span class="product-price"><span
-                            class="money">{{ Number::currency($total_price, 'NGN') }}</span></span>
+                            class="money">{{ Number::currency($total_price ?? 0, 'NGN') }}
+                        </span></span>
                 </div>
                 <div class="buttonSet text-center">
                     <a href="{{ asset('cart.html') }}" class="btn btn-secondary btn--small">View
